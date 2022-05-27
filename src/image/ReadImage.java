@@ -7,38 +7,74 @@ import java.io.File;
 import java.util.HashMap;
 
 public class ReadImage {
+
+    private int width;
+    private int height;
+    public BufferedImage image = null;
+
+    public BufferedImage getImage() {
+        return image;
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
     public ReadImage(File file){
         try{
-            BufferedImage image = ImageIO.read(file);
-            HashMap<Integer,int[]> imagePixles = new HashMap<Integer,int[]>();
-            readRGBPixles(image,imagePixles);
-            for (int i : imagePixles.keySet()) {
-                System.out.println("key: " + i + " value Red: " + imagePixles.get(i)[0]);
-                System.out.println("key: " + i + " value Green: " + imagePixles.get(i)[1]);
-                System.out.println("key: " + i + " value Blue: " + imagePixles.get(i)[2]);
-                System.out.println("-----------------------------------------------------");
-            }
+            image = ImageIO.read(file);
+            this.width = image.getWidth();
+            this.height = image.getHeight();
+            getRGBPixles(image);
+
         } catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    public HashMap<Integer, int[]> readRGBPixles(BufferedImage image, HashMap<Integer, int[]> imagePixles){
-        int[] rgb = new int[3];
-        for(int x =0;x<image.getWidth();x++){
-            for (int y=0; y<image.getHeight();y++){
-                int pixel = image.getRGB(x,y);
+    public HashMap<Integer, int[]> getRGBPixles(BufferedImage image){
+        int[] rgb = new int[4];
+        HashMap<Integer, int[]> pixels = new HashMap<Integer, int[]>();
+        for(int x =0;x< height;x++){
+            for (int y=0; y < width; y++){
+
+                int pixel = image.getRGB(y,x);
                 Color  colour = new Color(pixel,true);
+
                 int red = colour.getRed();
                 int green = colour.getGreen();
                 int blue = colour.getBlue();
+                int alpha = colour.getAlpha();
+
+
                 rgb[0] = red;
                 rgb[1] = green;
                 rgb[2] = blue;
-                imagePixles.put(pixel,rgb);
+                rgb[3] = alpha;
+                pixels.put(pixel, rgb);
+               /*
+                for (Integer i : pixels.keySet()) {
+                    System.out.println("key: " + i + " value: " + pixels.get(i)[0] + " " + pixels.get(i)[1] + " " + pixels.get(i)[2] + " " + pixels.get(i)[3]);
+                }
+                */
             }
         }
-
-        return imagePixles;
+        return pixels;
     }
 }
