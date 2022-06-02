@@ -1,38 +1,44 @@
 package image;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 public class ImageProcessor {
     public ReadImage ri;
+    private LinkedList<int[]> pixleList;
 
     public ImageProcessor(File f){
+        pixleList = new LinkedList();
         ri = new ReadImage(f);
     }
 
     public void getMetaData(){
-        HashMap<Integer, int[]>  pixels = ri.getRGBPixles(ri.getImage());
-        int total = pixels.size();
-        int redPixels = 0;
-        int greenPixels = 0;
-        int bluePixels = 0;
-        for (Integer i : pixels.keySet()) {
-            if(pixels.get(i)[0] >= pixels.get(i)[1] && pixels.get(i)[0] >= pixels.get(i)[2]){
-                redPixels += 1;
-            }
-            if(pixels.get(i)[1] >= pixels.get(i)[0] && pixels.get(i)[1] >= pixels.get(i)[2]){
-                greenPixels += 1;
-            }
-            if(pixels.get(i)[2] >= pixels.get(i)[1] && pixels.get(i)[2] >= pixels.get(i)[0]){
-                bluePixels += 1;
-            }
-
+        int totalPixles = ri.getTotalPixles();
+        Color[] colours = ri.getColours();
+        int[] RGB = new int[2];
+        for (int i = 0; i < totalPixles ; i++) {
+            Color c = colours[i];
+            int red = c.getRed();
+            int green = c.getGreen();
+            int blue = c.getBlue();
+            System.out.println("RED: " + red + " GREEN: " + green + " BLUE " + blue);
+            RGB[0] = red;
+            RGB[1] = green;
+            RGB[2] = blue;
+            pixleList.add(RGB);
         }
 
-        System.out.println("Total mostly red pixles :" + redPixels);
-        System.out.println("Total mostly blue pixles :" + bluePixels);
-        System.out.println("Total mostly green pixles :" + greenPixels);
+        getAverge();
+    }
+
+    //add to a linkled list every time a new RGB vlaue is added, if not then increace a ounter by 1
+    public void getAverge(){
+        List<itager> distinctElements = pixleList.stream().distinct().collect(Collectors.toList());
+
     }
 }
