@@ -1,12 +1,8 @@
 package image;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public class ImageProcessor {
     public ReadImage ri;
@@ -20,13 +16,12 @@ public class ImageProcessor {
     public void getMetaData(){
         int totalPixles = ri.getTotalPixles();
         Color[] colours = ri.getColours();
-        int[] RGB = new int[2];
+        int[] RGB = new int[3];
         for (int i = 0; i < totalPixles ; i++) {
             Color c = colours[i];
             int red = c.getRed();
             int green = c.getGreen();
             int blue = c.getBlue();
-            System.out.println("RED: " + red + " GREEN: " + green + " BLUE " + blue);
             RGB[0] = red;
             RGB[1] = green;
             RGB[2] = blue;
@@ -38,7 +33,18 @@ public class ImageProcessor {
 
     //add to a linkled list every time a new RGB vlaue is added, if not then increace a ounter by 1
     public void getAverge(){
-        List<itager> distinctElements = pixleList.stream().distinct().collect(Collectors.toList());
+        HashMap<int[], Integer> keyCountMap = new HashMap<>();
+        for(int i = 0; i < pixleList.size(); i++)
+        {
+            if(!keyCountMap.containsKey(pixleList.get(i))){
+                keyCountMap.put(pixleList.get(i), 1); // unique value or first occurrence
+            }
+            else{
+                keyCountMap.put(pixleList.get(i), keyCountMap.get(pixleList.get(i)) + 1);
+            }
+        }
+        System.out.println(keyCountMap);
+
 
     }
 }
