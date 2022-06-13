@@ -43,24 +43,18 @@ public class ImageProcessor {
             }
         }
 
-        getAverge(pixleList.size(), redPixles.size(), greenPixles.size(), bluePixles.size());
-    }
-
-    //add to a linkled list every time a new RGB vlaue is added, if not then increace a ounter by 1
-    public void getAverge(int totalPixles , int redTotal, int greenTotal,  int blueTotal){
-
-        float redAverage = (redTotal / totalPixles);
-        float greenAverage = (greenTotal / totalPixles);
-        float blueAverage = (blueTotal / totalPixles);
-
-
-        String redStr = String.format("%2.02f", redAverage);
-        String greenStr = String.format("%2.02f", greenAverage);
-        String blueStr = String.format("%2.02f", blueAverage);
-
-        System.out.println("Average Primarily Red Pixels = " + redStr);
-        System.out.println("Average Primarily Green Pixels = " + greenStr);
-        System.out.println("Average Primarily Blue Pixels = " + blueStr);
+        System.out.println("Average Red pixles: " + getAverge(pixleList.size(),redPixles.size()));
+        System.out.println("Average Green pixles: " + getAverge(pixleList.size(),greenPixles.size()));
+        System.out.println("Average Blue pixles: " +  getAverge(pixleList.size(),bluePixles.size()));
 
     }
+
+    public double getAverge(int totalPixles , int RGBtoal){
+        if(RGBtoal == 0){
+            return 0.0;
+        }
+        double pixleAverage = (totalPixles / RGBtoal );
+        return pixleAverage;
+    }
+
 }
